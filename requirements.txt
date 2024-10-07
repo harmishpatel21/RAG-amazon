@@ -3,5 +3,5 @@ beautifulsoup4
 requests
 transformers
 sentence-transformers
-faiss-cpu
-openai
+python-dotenv
+torch
