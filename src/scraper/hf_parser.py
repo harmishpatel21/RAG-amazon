@@ -1,8 +1,10 @@
 from transformers import pipeline
 from bs4 import BeautifulSoup
+import streamlit as st
 
 def clean_html(html_content):
     soup = BeautifulSoup(html_content, 'html.parser')
+    # st.write(soup.get_text(separator=' ', strip=True))
     return soup.get_text(separator=' ', strip=True)
 
 def extract_job_info(html_content, url):
@@ -26,7 +28,7 @@ def extract_job_info(html_content, url):
     # Extract information
     job_info = {}
     for question in questions:
-        result = qa_pipeline(question=question, context=cleaned_text[:512])  # Limit context to 512 tokens
+        result = qa_pipeline(question=question, context=cleaned_text[:10000])  # Limit context to 512 tokens
         job_info[question] = result['answer']
     
     # Format the extracted information
@@ -37,5 +39,20 @@ def extract_job_info(html_content, url):
     return formatted_info
 
 def parse_job_info(job_info):
-    # This function can be expanded to further process the job info if needed
-    return job_info
+    # Parse the job information into a structured format
+    structured_info = {}
+    lines = job_info.split('\n')
+    current_key = None
+
+    for line in lines:
+        if line.endswith('?'):
+            current_key = line.strip('?')
+            structured_info[current_key] = ""
+        elif current_key and line.strip():
+            structured_info[current_key] += line.strip() + " "
+
+    # Clean up any trailing spaces
+    for key in structured_info:
+        structured_info[key] = structured_info[key].strip()
+
+    return structured_info
