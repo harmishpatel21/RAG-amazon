@@ -8,7 +8,7 @@ def fetch_job_posting_html(url):
     try:
         response = requests.get(url, headers=headers)
         response.raise_for_status()  # Raise an exception for bad status codes
-        st.write(response.text)
+        # st.write(response.text)
         return response.text
     except requests.RequestException as e:
         raise ValueError(f"Failed to fetch the job posting: {str(e)}")

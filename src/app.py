@@ -38,7 +38,7 @@ if url:
             similarity = cosine_similarity([query_embedding], [job_embedding])[0][0]
             
             # Generate a response based on similarity
-            if similarity > 0.5:
+            if similarity > 0.2:
                 response = f"Based on the job posting, here's what I found:\n\n{structured_info}"
             else:
                 response = "I'm sorry, but I couldn't find a relevant answer to your question in the job posting."
